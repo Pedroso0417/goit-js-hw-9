@@ -1,31 +1,30 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const startBtn = document.getElementById('start-btn');
-  const stopBtn = document.getElementById('stop-btn');
-  let colorChangeInterval;
+function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, '0')}`;
+}
 
-  startBtn.addEventListener('click', startColorChange);
-  stopBtn.addEventListener('click', stopColorChange);
+let intervalId;
 
-  function startColorChange() {
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-    colorChangeInterval = setInterval(changeBackgroundColor, 1000);
-  }
+function startColorChange() {
+  document.getElementById('startButton').disabled = true;
+  document.getElementById('stopButton').disabled = false;
 
-  function stopColorChange() {
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    clearInterval(colorChangeInterval);
-  }
+  intervalId = setInterval(() => {
+    document.body.style.backgroundColor = getRandomHexColor();
+  }, 1000);
+}
 
-  function changeBackgroundColor() {
-    const randomColor = getRandomHexColor();
-    document.body.style.backgroundColor = randomColor;
-  }
+function stopColorChange() {
+  document.getElementById('startButton').disabled = false;
+  document.getElementById('stopButton').disabled = true;
 
-  function getRandomHexColor() {
-    return `#${Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, '0')}`;
-  }
-});
+  clearInterval(intervalId);
+}
+
+document
+  .getElementById('startButton')
+  .addEventListener('click', startColorChange);
+document
+  .getElementById('stopButton')
+  .addEventListener('click', stopColorChange);
